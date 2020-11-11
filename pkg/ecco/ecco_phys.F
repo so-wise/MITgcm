@@ -42,7 +42,7 @@ c     == local variables ==
       integer kgen, kgen3d, itr
       _RL areavolTile(nSx,nSy), areavolGlob
       _RL tmpfld, tmpvol, tmpmsk, tmpmsk2, tmpmskW, tmpmskS
-      _RL tmpsig, tmpsig_lower, tmpsig_upper
+      _RL tmp_sigmsk, tmpsig, tmpsig_lower, tmpsig_upper
 #endif
 
 c- note defined with overlap here, not needed, but more efficient
@@ -222,7 +222,8 @@ c            - now, tmpmsk is sigmoid times this value
                tmpsig_upper = 1.0 - ((1.0 + tanh(gencost_tanhScale(kgen)
      &           *(tmpsig-gencost_sigmaHigh(kgen))))/2.0)
 c             - update mask value based on the sigmoid function
-               tmpmsk = tmpsig_lower*tmpsig_upper
+               tmp_sigmsk = tmpsig_lower*tmpsig_upper
+               tmpmsk = tmpmsk*tmp_sigmsk
              endif
             endif
 c ---- end of density mask (but tmpmsk is used below)
